@@ -63,13 +63,13 @@ private:
 
 class LogicalOperationNode : public Node {
 public:
-    LogicalOperationNode(const LogicalOperation &logOp, shared_ptr<const Node> &left, shared_ptr<const Node> &right);
+    LogicalOperationNode(const LogicalOperation &logOp, const shared_ptr<Node> &left, const shared_ptr<Node> &right);
 
     bool Evaluate(const Date &date, const string &event) const override;
 
 private:
     const LogicalOperation _logOp;
-    const shared_ptr<const Node> _left, _right;
+    const shared_ptr<Node> _left, _right;
 };
 
 

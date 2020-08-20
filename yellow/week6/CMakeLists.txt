@@ -5,6 +5,6 @@ project(${TARGET_NAME})
 
 file(GLOB SRC "*.cpp")
 add_executable(${TARGET_NAME} ${SRC})
-target_compile_options(${TARGET_NAME} PRIVATE -Wall -Wextra -pedantic -Werror)
+#target_compile_options(${TARGET_NAME})
 
 

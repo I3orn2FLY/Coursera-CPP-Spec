@@ -14,12 +14,39 @@ public:
     void Add(const Date &date, const string &event);
 
     template<typename Pred>
-    bool RemoveIf(Pred p);
+    int RemoveIf(Pred p) {
+        int N = 0;
+        for (auto &[date, events]: bd) {
+            auto i = remove_if(begin(events), end(events),
+                               [p, date = date](const string &event) {
+                                   return p(date, event);
+                               });
+            N += (end(events) - i);
+            events.erase(i, end(events));
+            if (events.empty()) bd.erase(date);
+        }
+
+        return N;
+    }
+
 
     template<typename Pred>
-    void FindIf(Pred p) const;
+    vector<pair<Date, string>> FindIf(Pred p) const {
+        vector<pair<Date, string>> res;
+        for (auto[date, events]: bd) {
+            auto d = partition(begin(events), end(events),
+                               [p, date = date](const string &event) {
+                                   return p(date, event);
+                               });
+            for (auto i = begin(events); i != d; i++) {
+                res.emplace_back(date, *i);
+            }
+        }
 
-    void Last(const Date &date) const;
+        return res;
+    }
+
+    pair<Date, string> Last(const Date &date) const;
 
     void Print(ostream &os) const;
 
@@ -29,5 +56,7 @@ private:
 
 };
 
+
+ostream &operator<<(ostream &os, const pair<Date, string> &p);
 
 #endif //WEEK5_DATABASE_H

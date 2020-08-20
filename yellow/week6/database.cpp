@@ -6,43 +6,39 @@
 #include "date.h"
 
 void Database::Add(const Date &date, const string &event) {
-    bd[date].push_back(event);
-}
-
-
-void Database::Last(const Date &date) const {
-
-}
-
-template<typename Pred>
-bool Database::RemoveIf(Pred p) {
-    int N = 0;
-    for (auto &[date, events]: bd) {
-        for (const auto &event: events) {
-            if (p(date, event)) {
-
-//                events;
-            }
-        }
+    if (find(begin(bd[date]), end(bd[date]), event) == end(bd[date])) {
+        bd[date].push_back(event);
     }
-    cout << "Deleted " << N << " events" << endl;
-
-    return N;
 }
 
-template<typename Pred>
-void Database::FindIf(Pred p) const {
 
+pair<Date, string> Database::Last(const Date &date) const {
+    auto it = bd.upper_bound(date);
+    if (it == begin(bd)) {
+        throw invalid_argument("");
+    }
+    --it;
+    if (it->second.empty()) {
+        throw invalid_argument("");
+    }
+
+    return make_pair(it->first, it->second.back());
 }
+
 
 void Database::Print(ostream &os) const {
-    for (const auto &item: bd) {
-        for (const auto &event: bd.at(item.first)) {
-            os << item.first << " " << event.first << endl;
+    for (const auto &[date, events]: bd) {
+        for (const string &event: events) {
+            auto p = make_pair(date, event);
+            os << p << endl;
         }
     }
+    flush(os);
 }
 
 
-
+ostream &operator<<(ostream &os, const pair<Date, string> &p) {
+    os << p.first << " " << p.second;
+    return os;
+}
 

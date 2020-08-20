@@ -15,7 +15,8 @@ using namespace std;
 
 string ParseEvent(istream &is) {
     string event;
-    is >> event;
+    is >> ws;
+    getline(is, event);
     return event;
 }
 
@@ -44,11 +45,12 @@ int main() {
             };
             int count = db.RemoveIf(predicate);
             cout << "Removed " << count << " entries" << endl;
-        } else if (command == "FindIf") {
+        } else if (command == "Find") {
             auto condition = ParseCondition(is);
             auto predicate = [condition](const Date &date, const string &event) {
                 return condition->Evaluate(date, event);
             };
+
 
             const auto entries = db.FindIf(predicate);
             for (const auto &entry : entries) {

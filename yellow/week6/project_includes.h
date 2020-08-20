@@ -10,3 +10,10 @@
 #include <algorithm>
 
 using namespace std;
+
+template<typename T>
+ostream &operator<<(ostream &os, const vector<T> &v) {
+    for (const auto &i:v) os << i << " ";
+//    cout << endl;
+    return os;
+}

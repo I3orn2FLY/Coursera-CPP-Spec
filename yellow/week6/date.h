@@ -9,7 +9,13 @@
 
 class Date {
 public:
-    explicit Date(const int &year, const int &month, const int &day);
+    Date(const int &year, const int &month, const int &day);
+
+    Date(const Date &date) {
+        year_ = date.GetYear();
+        month_ = date.GetMonth();
+        day_ = date.GetDay();
+    }
 
     int GetYear() const;
 
