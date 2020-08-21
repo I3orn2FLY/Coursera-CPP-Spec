@@ -45,13 +45,11 @@ public:
     template<typename Pred>
     vector<pair<Date, string>> FindIf(Pred p) const {
         vector<pair<Date, string>> res;
-        for (auto[date, events]: date_to_vector_events) {
-            auto d = partition(begin(events), end(events),
-                               [p, date = date](const string &event) {
-                                   return p(date, event);
-                               });
-            for (auto i = begin(events); i != d; i++) {
-                res.emplace_back(date, *i);
+        for (const auto& [date, events]: date_to_vector_events) {
+            for (const string &event: events){
+                if (p(date,event)){
+                    res.push_back(make_pair(date, event));
+                }
             }
         }
 
