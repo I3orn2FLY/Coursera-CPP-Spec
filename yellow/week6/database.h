@@ -18,16 +18,17 @@ public:
         int N = 0;
         vector<Date> dates_to_erase;
         for (auto &[date, events]: date_to_vector_events) {
-            auto i = remove_if(begin(events), end(events),
-                               [p, date = date](const string &event) {
-                                   return p(date, event);
-                               });
+            auto i = stable_partition(begin(events), end(events),
+                                      [p, date = date](const string &event) {
+                                          return !p(date, event);
+                                      });
+
             N += (end(events) - i);
             for (auto j = i; j != end(events); ++j) {
                 date_to_set_events[date].erase(*j);
             }
             events.erase(i, end(events));
-            if (events.empty()){
+            if (events.empty()) {
                 dates_to_erase.push_back(date);
             }
         }
